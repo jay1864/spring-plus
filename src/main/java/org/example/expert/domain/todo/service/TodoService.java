@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.expert.client.WeatherClient;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.InvalidRequestException;
+import org.example.expert.domain.todo.dto.TodoProjection;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
@@ -81,5 +82,10 @@ public class TodoService {
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
         );
+    }
+
+    public Page<TodoProjection> searchTodos(int page, int size, String title, String nickname, LocalDate startDate, LocalDate endDate) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return todoRepository.findAllBySearch(pageable, title, nickname, startDate, endDate);
     }
 }
